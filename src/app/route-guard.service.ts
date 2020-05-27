@@ -14,10 +14,11 @@ export class RouteGuardService implements CanActivate {
   constructor(private router: Router, private auth: LoginService) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    if (this.auth.isUserLoggedIn()) {
-      return true;
-    } else {
+    if (!this.auth.isLogged()) {
       this.router.navigate([""]);
+      return false;
+    } else {
+      return true;
     }
   }
 }

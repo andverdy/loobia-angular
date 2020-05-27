@@ -1,32 +1,17 @@
 import { EventEmitter, Injectable, Output } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { User } from "../model/User";
-
-interface Jwt {
-  access_token: string;
-  token_type: string;
-  expires_in: number;
-  user_name: string;
-  email: string;
-}
+import { map } from "rxjs/operators";
 
 @Injectable()
 export class LoginService {
-  private isUserLogged = false;
+  isUserLogged = false;
+  private tokenStr = null;
   @Output() userSignedIn = new EventEmitter<User>();
   @Output() userLogOut = new EventEmitter();
   constructor(private httpClient: HttpClient) {}
 
-  isUserLoggedIn() {
-    this.isUserLogged = !!localStorage.getItem("token");
-    return this.isUserLogged;
-  }
-
-  signIn(email: string, password: string) {
-    let options = {
-      headers: new HttpHeaders().set("Content-Type", "application/json"),
-    };
-
+  autenticaService(email: string, password: string) {
     let body = {
       email: email,
       password: password,
@@ -36,29 +21,32 @@ export class LoginService {
       .post("http://localhost:8080/loobia/api/user/login", body, {
         responseType: "text",
       })
-      .subscribe((response) => {
-        console.log("risultato response: " + response);
-        localStorage.setItem("token", response);
-      });
-    return true;
+      .pipe(
+        map((response) => {
+          sessionStorage.setItem("email", email);
+          sessionStorage.setItem("token", response);
+          console.log("stampa token: " + response);
+        })
+      );
   }
 
-  logOut() {
-    localStorage.removeItem("token");
-    this.isUserLogged = false;
+  loggedUser() {
+    let utente = sessionStorage.getItem("email");
+
+    return sessionStorage.getItem("email") != null ? utente : "";
   }
 
-  getUser(): User {
-    const data = JSON.parse(localStorage.getItem("user"));
-    let user = new User();
-    if (data) {
-      user.name = data["user_name"];
-      user.email = data["email"];
-    }
-    return user;
+  getAuthToken() {
+    if (this.loggedUser()) return sessionStorage.getItem("token");
+    else return "";
   }
 
-  getToken() {
-    return localStorage.getItem("token");
+  isLogged() {
+    return sessionStorage.getItem("email") != null ? true : false;
+  }
+
+  clearAll() {
+    sessionStorage.removeItem("email");
+    sessionStorage.removeItem("token");
   }
 }

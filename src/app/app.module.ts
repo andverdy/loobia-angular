@@ -10,9 +10,12 @@ import { CardComponent } from "./components/card/card.component";
 import { RouteGuardService } from "./route-guard.service";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { HttpClientModule } from "@angular/common/http";
+import { ErrorComponentComponent } from './error-component/error-component.component';
+import { JumbotronComponent } from './jumbotron/jumbotron.component';
+import { LogoutComponent } from './logout/logout.component';
 
 @NgModule({
-  declarations: [AppComponent, NavbarComponent, LoginComponent, CardComponent],
+  declarations: [AppComponent, NavbarComponent, LoginComponent, CardComponent, ErrorComponentComponent, JumbotronComponent, LogoutComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

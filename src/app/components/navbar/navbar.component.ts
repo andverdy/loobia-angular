@@ -1,8 +1,12 @@
-import { Component, EventEmitter, OnInit, Output } from "@angular/core";
-import { LoginService } from "src/app/services/login.service";
-import { Route } from "@angular/compiler/src/core";
+import {
+  Component,
+  OnInit,
+  Output,
+  EventEmitter,
+  ViewChild,
+} from "@angular/core";
 import { Router } from "@angular/router";
-import { User } from "src/app/model/User";
+import { LoginService } from "src/app/services/login.service";
 
 @Component({
   selector: "app-navbar",
@@ -10,40 +14,16 @@ import { User } from "src/app/model/User";
   styleUrls: ["./navbar.component.css"],
 })
 export class NavbarComponent implements OnInit {
-  title = "LOOBIA";
-  subtitle = "Per la Cura dei tuoi Capelli";
-  @Output() onNewUser = new EventEmitter();
-  isUserLOggedIn = false;
-  username: string;
+  //@ViewChild(ArticoliComponent) art: ArticoliComponent;
+  //@Output() onRefresh: EventEmitter<null> = new EventEmitter<null>();
 
-  constructor(private auth: LoginService, private router: Router) {
-    auth.userSignedIn.subscribe((user: User) => {
-      this.username = user.name;
-      this.isUserLOggedIn = true;
-    });
-    auth.userLogOut.subscribe(() => {
-      this.username = "";
-      this.isUserLOggedIn = false;
-    });
+  filter: string = "";
+
+  constructor(public auth: LoginService, private route: Router) {}
+
+  refresh() {
+    //this.onRefresh.emit();
   }
 
-  ngOnInit() {
-    this.isUserLOggedIn = this.auth.isUserLoggedIn();
-  }
-
-  newUser() {
-    this.onNewUser.emit();
-  }
-
-  logOut(e) {
-    e.preventDefault();
-    this.auth.logOut();
-    setTimeout(() => {
-      this.router.navigate([""]);
-    }, 300);
-  }
-  signIn(e) {
-    e.preventDefault();
-    this.router.navigate([""]);
-  }
+  ngOnInit() {}
 }

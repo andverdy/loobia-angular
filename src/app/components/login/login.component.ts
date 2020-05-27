@@ -11,15 +11,25 @@ import { Router } from "@angular/router";
 export class LoginComponent implements OnInit {
   constructor(private auth: LoginService, private router: Router) {}
 
-  ngOnInit() {}
-  signIn(form: NgForm) {
-    if (!form.valid) {
-      return false;
-    }
+  email = "";
+  password = "";
+  autenticato = true;
+  //consentito = false
+  errorMsg = "Spiacente, l'email o la password sono errati!";
+  //infoMsg = 'Accesso Consentito'
 
-    let result = this.auth.signIn(form.value.email, form.value.password);
-    if (result) {
-      this.router.navigate(["orders"]);
-    }
+  ngOnInit() {}
+  gestAuth() {
+    this.auth.autenticaService(this.email, this.password).subscribe(
+      (response) => {
+        console.log(response);
+        this.autenticato = true;
+        this.router.navigate(["orders"]);
+      },
+      (error) => {
+        console.log(error);
+        this.autenticato = false;
+      }
+    );
   }
 }
