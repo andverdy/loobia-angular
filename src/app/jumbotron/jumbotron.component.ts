@@ -14,6 +14,7 @@ export class JumbotronComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
+    this.Titolo = "Loobia";
     console.log(this.Titolo);
   }
 }

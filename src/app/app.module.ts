@@ -13,9 +13,13 @@ import { HttpClientModule } from "@angular/common/http";
 import { ErrorComponentComponent } from './error-component/error-component.component';
 import { JumbotronComponent } from './jumbotron/jumbotron.component';
 import { LogoutComponent } from './logout/logout.component';
+import { AdministrationComponent } from './components/administration/administration.component';
+import { ForbiddenComponent } from './components/forbidden/forbidden.component';
+import { WelcomeComponent } from './components/welcome/welcome.component';
+import { RoleComponent } from './components/role/role.component';
 
 @NgModule({
-  declarations: [AppComponent, NavbarComponent, LoginComponent, CardComponent, ErrorComponentComponent, JumbotronComponent, LogoutComponent],
+  declarations: [AppComponent, NavbarComponent, LoginComponent, CardComponent, ErrorComponentComponent, JumbotronComponent, LogoutComponent, AdministrationComponent, ForbiddenComponent, WelcomeComponent, RoleComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

@@ -19,11 +19,17 @@ export class NavbarComponent implements OnInit {
 
   filter: string = "";
 
-  constructor(public auth: LoginService, private route: Router) {}
-
-  refresh() {
-    //this.onRefresh.emit();
-  }
+  isAuth = sessionStorage.getItem("token");
+  private email: string;
+  constructor(public auth: LoginService, private router: Router) {}
 
   ngOnInit() {}
+
+  logOut() {
+    console.log("click fatto");
+    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("email");
+    sessionStorage.removeItem("ruolo");
+    this.router.navigate([""]);
+  }
 }

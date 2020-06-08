@@ -1,15 +1,14 @@
-import { EventEmitter, Injectable, Output } from "@angular/core";
+import { Injectable, Output } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { User } from "../model/User";
 import { map } from "rxjs/operators";
+import { Router } from "@angular/router";
 
 @Injectable()
 export class LoginService {
   isUserLogged = false;
-  private tokenStr = null;
-  @Output() userSignedIn = new EventEmitter<User>();
-  @Output() userLogOut = new EventEmitter();
-  constructor(private httpClient: HttpClient) {}
+
+  constructor(private httpClient: HttpClient, private router: Router) {}
 
   autenticaService(email: string, password: string) {
     let body = {
@@ -22,14 +21,18 @@ export class LoginService {
         responseType: "text",
       })
       .pipe(
-        map((response) => {
+        map((data) => {
           sessionStorage.setItem("email", email);
-          sessionStorage.setItem("token", response);
-          console.log("stampa token: " + response);
+          sessionStorage.setItem("token", data);
+          console.log("stampa token: " + data);
         })
       );
   }
 
+  isUserLoggedIn() {
+    this.isUserLogged = !!sessionStorage.getItem("token");
+    return this.isUserLogged;
+  }
   loggedUser() {
     let utente = sessionStorage.getItem("email");
 
@@ -43,10 +46,5 @@ export class LoginService {
 
   isLogged() {
     return sessionStorage.getItem("email") != null ? true : false;
-  }
-
-  clearAll() {
-    sessionStorage.removeItem("email");
-    sessionStorage.removeItem("token");
   }
 }
